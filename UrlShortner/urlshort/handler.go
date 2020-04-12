@@ -49,8 +49,14 @@ func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	return MapHandler(pathsToURL, fallback), nil
 }
 
+// JSONHandler to create a similar
 func JSONHandler(json []byte, fallback http.Handler) (http.HandlerFunc, error) {
-
+	pathsUrls, err := ParseJson(json)
+	if err != nil {
+		return nil, err
+	}
+	pathsToURL := buildMap(pathsUrls)
+	return MapHandler(pathsToURL, fallback), nil
 }
 
 func buildMap(pathsUrls []PathURL) map[string]string {

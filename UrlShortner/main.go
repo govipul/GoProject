@@ -27,8 +27,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	jsonHandler, err := urlshort.JSONHandler([]byte(yaml), yamlHandler)
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Println("Starting the server on :8080")
-	http.ListenAndServe(":8080", yamlHandler)
+	serverErr := http.ListenAndServe(":8080", jsonHandler)
+
+	if serverErr != nil {
+		fmt.Printf("Unable to start the server")
+		panic(err)
+	}
 }
 
 func defaultMux() *http.ServeMux {
